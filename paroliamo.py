@@ -1,9 +1,5 @@
 from itertools import combinations
 
-letters = 'zastotazel'
-letters = ''.join(sorted(letters))
-print(letters)
-
 with open('paroliamo.txt', 'r') as f:
     words = [tuple(w[:-1].split(' ')) for w in f.readlines()]
 
@@ -25,9 +21,10 @@ def gen(l, n):
     return ret
 
 
-def find(l):
+def find(l, auto=False):
+    l = sorted(l)
     acc = 0
-    while len(l) - acc > 5:
+    while len(l) - acc > 4:
         print(f'looking into matching {len(l) - acc} letters')
         candidates = gen(l, acc)
         solutions = []
@@ -35,6 +32,8 @@ def find(l):
             solutions += match(cand)
         solutions = list(dict.fromkeys(solutions))
         if solutions:
+            if auto:
+                return solutions
             print(solutions)
             if input('go on? (y/N): ') != 'y':
                 break
@@ -42,6 +41,3 @@ def find(l):
                 acc += 1
         else:
             acc += 1
-
-
-print(find(letters))
